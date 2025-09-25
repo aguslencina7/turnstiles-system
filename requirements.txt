@@ -1,0 +1,23 @@
+# GPIO control
+RPi.GPIO
+
+# Web framework
+Flask
+
+# Database (ORM)
+SQLAlchemy
+
+# SQLite driver (ya viene con Python, pero se puede usar psycopg2 si elegís Postgres)
+psycopg2-binary
+
+# Para APIs REST más cómodas
+Flask-RESTful
+
+# Manejo de CORS si conectás desde otra PC
+Flask-Cors
+
+# Para contraseñas seguras
+bcrypt
+
+# Logs estructurados
+loguru
