@@ -1,23 +1,21 @@
-# GPIO control
+# GPIO (en Raspberry)
 RPi.GPIO
+gpiozero
 
-# Web framework
+# HTTP y OAuth2
+requests
+python-dotenv
+
+# Web API (opcional futuro)
 Flask
-
-# Database (ORM)
-SQLAlchemy
-
-# SQLite driver (ya viene con Python, pero se puede usar psycopg2 si elegís Postgres)
-psycopg2-binary
-
-# Para APIs REST más cómodas
 Flask-RESTful
-
-# Manejo de CORS si conectás desde otra PC
 Flask-Cors
 
-# Para contraseñas seguras
-bcrypt
+# ORM / DB
+SQLAlchemy
+psycopg2-binary  # solo si luego usas Postgres
 
-# Logs estructurados
+# Seguridad / logs / tests
+bcrypt
 loguru
+pytest

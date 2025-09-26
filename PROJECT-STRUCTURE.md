@@ -9,12 +9,14 @@ molinete-system/
 │ ├── gpio_controller.py    # Class for handling GPIOs (simulate buttons, read and confirmation)
 │ ├── relay_driver.py       # Functions to drive relays
 │ ├── sensors.py            # Reading of passage confirmation, emergency, etc.
+│ ├── reader.py             # Reading of the user credentials
 │
 ├── core/                   # Business logic (state machine)
 │ ├── init.py
 │ ├── state_machine.py      # Cycle IDLE → enable → confirm → log
 │ ├── access_control.py     # User credential validation (RFID, PIN, API)
 │ ├── config.py             # General configuration (timers, modes S1, NA/NC)
+│ ├── normalization.py      # Normalization of the user card id
 │
 ├── data/                   # Database and persistence
 │ ├── init.py
