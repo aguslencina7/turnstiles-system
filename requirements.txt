@@ -1,6 +1,6 @@
-# GPIO (en Raspberry)
-RPi.GPIO
-gpiozero
+# GPIO (en Raspberry, usar fake-rpi en PC)
+#RPi.GPIO
+#gpiozero
 
 # HTTP y OAuth2
 requests
@@ -12,8 +12,8 @@ Flask-RESTful
 Flask-Cors
 
 # ORM / DB
-SQLAlchemy
-psycopg2-binary  # solo si luego usas Postgres
+#SQLAlchemy
+#psycopg2-binary  # solo si luego usas Postgres
 
 # Seguridad / logs / tests
 bcrypt

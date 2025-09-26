@@ -1,0 +1,1 @@
+#Anti double lecture window (ex:"800ms per credential_hash")
