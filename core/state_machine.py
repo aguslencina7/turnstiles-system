@@ -2,11 +2,14 @@ from core.normalization import normalize_credential
 from utils.loggers import logger
 
 class TurnstileStateMachine:
-    def __init__(self):
+    def __init__(self, api, gpio, cfg: dict):
+        self.api = api
+        self.gpio = gpio
+        self.cfg = cfg
         self.state = "IDLE"
 
-    def process_credential(self, raw = str):
-        logger.info(f"Actual state: {self.state}")
+    def process_credential(self, raw = str, direction = "CW"):
+        logger.info(f"Actual state: {self.state} raw = {raw}")
 
         try: 
             cred = normalize_credential(raw)
@@ -15,22 +18,34 @@ class TurnstileStateMachine:
             logger.error(f"Error normalizing credential: {e}.")
             return "DENIED"
         
-        authorized = True
-
-        if authorized:
-            self.state = "ENABLED"
-            logger.info(f"Access authorized -> Unlocking turnstile (simulated).")
-            # GPIO.enable()
-            self.state = "WAIT_CONFIRM"
-        else:
-            self.state = "DENIED"
-            logger.warning("Access denied.")
+        self.state = "AUTH"
+        token = self.api.get_token()
+        resp = self.api.validate_credential(cred, self.cfg["GATE_ID"], token)
         
-        # User cross the turnstile
-        self.state = "LOG"
-        logger.info("Access confirmed (simulated).")
-        self.state = "IDLE"
+        if not resp.get("authorized"):
+            logger.warning("Access denied")
+            return "DENIED"
+        
+        # Enable
+        self.state = "ENABLE"
+        if direction == "CW":
+            self.gpio.enable_cw(pulse_ms = 300)
+        else:
+            self.gpio.enable_ccw(pulse_ms = 300)
 
-        return "OK"
+        # Wait confirm
+        self.state = "WAIT_CONFIRM"
+        ok = self.gpio.wait_confirmation(timeout_s = self.cfg.get("CONFIRM_TIMEOUT_SEC", 5))
+
+        # Log
+        self.state = "LOG"
+        logger.info(f"confirm = {ok} user = {resp.get('user_id')}")
+
+        # Reset
+        self.state = "IDLE"
+        if ok:
+            return "OK"
+        else:
+            return "TIMEOUT"
     
 # self.state = "AUTH" when the request is received (by API or local cache)

@@ -19,3 +19,6 @@ Flask-Cors
 bcrypt
 loguru
 pytest
+
+# Reader
+evdev

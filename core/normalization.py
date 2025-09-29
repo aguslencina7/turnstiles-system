@@ -18,7 +18,8 @@ def normalize_credential(raw): #Function for normalize the code coming from the 
     if not clean:
         raise ValueError(f"Invalid credential: {raw}")
     
-    return clean.upper()
+    return del_char.upper()
+
 #def format_detector(raw)
 
 #def normalize_hex(raw):
