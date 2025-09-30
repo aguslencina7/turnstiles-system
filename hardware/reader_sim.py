@@ -3,10 +3,14 @@ import time
 from typing import Optional, Iterable
 
 try:
-    from evdev import InputDevice, list_device, categorize, ecodes
-    HAVE_EDVED = True
+    from evdev import InputDevice, list_devices, categorize, ecodes # type: ignore
+    HAVE_EVDEV = True
 except Exception:
-    HAVE_EDVED = False
+    HAVE_EVDEV = False
+    class DummyEcodes:
+        def __getattr__(self, _): return 0
+    ecodes = DummyEcodes()
+
 
 # Keys Map
 KEYMAP = {
@@ -64,7 +68,7 @@ SHIFT_KEYS = {
     getattr(ecodes, "KEY_RIGHTSHIFT", 0),
 }
 
-class CredentialReader:
+class CredentialReaderSim:
     """
     Lector de credenciales USB que emula teclado (HID).
     Lee directamente /dev/input/eventX, hace 'grab' para que no escriba en la consola,
@@ -96,14 +100,14 @@ class CredentialReader:
 
     def _auto_find_device(self, hints: Iterable[str]) -> str:
         hints = tuple(h.lower() for h in hints)
-        for path in list_devices():
+        for path in list_devices(): # type: ignore
             d = InputDevice(path)
             name = (d.name or "").lower()
             if any(h in name for h in hints):
                 return path
         
         # If cannot find by name, take the first with keyboard capacity
-        for path in list_devices():
+        for path in list_devices(): # type: ignore
             d = InputDevice(path)
             try:
                 caps = d.capabilities(verbose = True)

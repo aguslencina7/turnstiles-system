@@ -1,5 +1,6 @@
 from core.normalization import normalize_credential
 from utils.loggers import logger
+from core.debounce import Debouncer
 
 class TurnstileStateMachine:
     def __init__(self, api, gpio, cfg: dict):
@@ -7,6 +8,7 @@ class TurnstileStateMachine:
         self.gpio = gpio
         self.cfg = cfg
         self.state = "IDLE"
+        self.debouncer = Debouncer(window_ms = 800)
 
     def process_credential(self, raw = str, direction = "CW"):
         logger.info(f"Actual state: {self.state} raw = {raw}")
@@ -17,6 +19,10 @@ class TurnstileStateMachine:
         except ValueError as e:
             logger.error(f"Error normalizing credential: {e}.")
             return "DENIED"
+        
+        if self.debouncer.is_debounced(cred):
+            logger.warning(f"Credential {cred} ignored for bounce.")
+            return "IGNORED"
         
         self.state = "AUTH"
         token = self.api.get_token()
