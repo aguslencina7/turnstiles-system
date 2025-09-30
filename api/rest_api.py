@@ -14,12 +14,16 @@ class ApiClient:
         self.simulated = simulated
     
     def get_token(self) -> str:
-        return "SIM_TOKEN" if self.simulated else NotImplemented # Later real OAuath2
+        if self.simulated:
+            return "SIM_TOKEN"
+        else:
+            return NotImplemented
+        # Later real OAuath2
     
     def validate_credential(self, credential: str, gate_id: str, token: str) -> dict:
         if self.simulated:
             time.sleep(0.1)
-            allow = credential[-1] in "02468" #Simulates if credential ends in one of the numbers of the list to allow access
+            allow = credential[-1] in "02468" # Dummy rule
             return {"authorized": allow, "user_id": f"user_{credential[-4:]}"} 
         raise NotImplementedError   
 

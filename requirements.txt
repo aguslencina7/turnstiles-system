@@ -2,23 +2,15 @@
 #RPi.GPIO
 #gpiozero
 
+# Reader
+#evdev
+
 # HTTP y OAuth2
 requests
 python-dotenv
-
-# Web API (opcional futuro)
-Flask
-Flask-RESTful
-Flask-Cors
-
-# ORM / DB
-#SQLAlchemy
-#psycopg2-binary  # solo si luego usas Postgres
 
 # Seguridad / logs / tests
 bcrypt
 loguru
 pytest
 
-# Reader
-evdev

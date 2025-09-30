@@ -1,7 +1,12 @@
-# Entornos virtuales
+# Entornos virtuales / secrets
 venv/
 .env/
 *.env
+.env
+.env.dev
+.env.prod
+.env.sim
+.env.real
 
 # Archivos de dependencias compilados
 __pycache__/
@@ -10,18 +15,14 @@ __pycache__/
 *.pyd
 .pytest_cache
 
-# Archivos de logs
+# Logs / Databases
 *.log
-
-# Bases de datos locales
 *.sqlite3
 *.db
 
-# Archivos de sistema
+# SO/IDE
 .DS_Store
 Thumbs.db
-
-# Configuración de editores/IDE
 .vscode/
 .idea/
 
@@ -30,7 +31,7 @@ Thumbs.db
 *.swp
 *.bak
 
-# Secrets
-*.env
-.env*
-.env*
+# Builds
+dist/
+build/
+*.egg-info/

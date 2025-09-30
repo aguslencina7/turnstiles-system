@@ -1,32 +1,23 @@
-import time
 from core.state_machine import TurnstileStateMachine
-from core.debounce import Debouncer
 from api.rest_api import ApiClient
-from hardware.gpio_sim import GpioSim
-from hardware.reader_sim import CredentialReader
+from hardware.gpio_controller_pc import GpioSim
+from hardware.reader_pc import ReaderSim
 
-def test_reader_debounce_intergation(capsys):
+def test_flow_with_debounce():
     cfg = {"GATE_ID": "turnstile_01", "CONFIRM_TIMEOUT_SEC": 1}
-    api = ApiClient(simulated= True)
-    gpio = GpioSim(confirm_after_s= 0.1)
+    api = ApiClient(simulated=True)
+    gpio = GpioSim(confirm_after_s=0.1)
+    sm = TurnstileStateMachine(api=api, gpio=gpio, cfg=cfg)
 
-    sm = TurnstileStateMachine(api= api, gpio= gpio, cfg= cfg)
-
-    # Replace the internal debouncer with a bigger one (1s)
-    sm.debouncer = Debouncer(window_ms= 1000)
-
-    # Simulated reader in manual mode with repeated credentials
-    reader = CredentialReader(mode= "manual", sequense=["ABCD1234", "ABCD1234", "WXYZ9876"], loop_sequence= False)
-
+    reader = ReaderSim(mode="manual", sequence=["ABCD1234", "ABCD1234", "FEDCBA98"], loop_sequence=False)
     results = []
     while True:
         raw = reader.read_once()
         if raw is None:
             break
-    res = sm.process_credential(raw)
-    results.append(res)
-    time.sleep(0.2) #Simulates time between reads
+        results.append(sm.process_credential(raw, direction="CW"))
 
+    # 1° procesa, 2° ignorado por rebote, 3° procesa
     assert results[0] in ("OK", "DENIED")
     assert results[1] == "IGNORED"
     assert results[2] in ("OK", "DENIED")

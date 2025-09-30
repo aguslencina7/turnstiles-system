@@ -10,8 +10,8 @@ class TurnstileStateMachine:
         self.state = "IDLE"
         self.debouncer = Debouncer(window_ms = 800)
 
-    def process_credential(self, raw = str, direction = "CW"):
-        logger.info(f"Actual state: {self.state} raw = {raw}")
+    def process_credential(self, raw: str, direction = "CW"):
+        logger.info(f"Actual state: {self.state} raw = {raw!r}")
 
         try: 
             cred = normalize_credential(raw)
@@ -24,6 +24,7 @@ class TurnstileStateMachine:
             logger.warning(f"Credential {cred} ignored for bounce.")
             return "IGNORED"
         
+        # Auth
         self.state = "AUTH"
         token = self.api.get_token()
         resp = self.api.validate_credential(cred, self.cfg["GATE_ID"], token)
@@ -54,4 +55,3 @@ class TurnstileStateMachine:
         else:
             return "TIMEOUT"
     
-# self.state = "AUTH" when the request is received (by API or local cache)

@@ -20,10 +20,3 @@ def normalize_credential(raw): #Function for normalize the code coming from the 
     
     return del_char.upper()
 
-#def format_detector(raw)
-
-#def normalize_hex(raw):
-
-#def normalize_decimal(raw):
-
-#def normalize_ascii_tag():
