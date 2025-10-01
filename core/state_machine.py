@@ -31,6 +31,7 @@ class TurnstileStateMachine:
         
         if not resp.get("authorized"):
             logger.warning("Access denied")
+            self.state = "IDLE"
             return "DENIED"
         
         # Enable
