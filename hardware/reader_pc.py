@@ -20,4 +20,4 @@ class ReaderSim:
             val = self.sequence[self._i]
             self._i += 1
             return val
-        return self._rand_hex()
+        return self.generate_rand_hex()
