@@ -9,7 +9,7 @@ class ReaderSim:
         self._i = 0
 
     def generate_rand_hex(self, n=8):
-        hex - secrets.token_hex(8)
+        hex = secrets.token_hex(8)
         #return "".join(random.choice("0123456789ABCDEF") for _ in range(n)) #Intentar hacer que haga credenciales completas para que puedan ser normalizadas
 
     def read_once(self):
