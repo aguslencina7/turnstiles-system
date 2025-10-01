@@ -15,7 +15,7 @@ def normalize_credential(raw): #Function for normalize the code coming from the 
     del_char = re.sub(r"-", "", del_spaces)
 
 
-    if not clean:
+    if not del_char:
         raise ValueError(f"Invalid credential: {raw}")
     
     return del_char.upper()

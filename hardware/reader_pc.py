@@ -1,4 +1,4 @@
-import time, random
+import time, random, secrets
 
 class ReaderSim:
     def __init__(self, mode="manual", interval_s=2.0, sequence=None, loop_sequence=True):
@@ -8,8 +8,9 @@ class ReaderSim:
         self.loop_sequence = loop_sequence
         self._i = 0
 
-    def _rand_hex(self, n=8):
-        return "".join(random.choice("0123456789ABCDEF") for _ in range(n))
+    def generate_rand_hex(self, n=8):
+        hex - secrets.token_hex(8)
+        #return "".join(random.choice("0123456789ABCDEF") for _ in range(n)) #Intentar hacer que haga credenciales completas para que puedan ser normalizadas
 
     def read_once(self):
         time.sleep(0.2)
