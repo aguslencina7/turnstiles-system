@@ -1,11 +1,4 @@
-#get_token()
-
-#validate_credentials(credential, gate_id, token) 
-# returns {authorized, user_id}
-
-#timeouts, backoff retrys, error handle (4xx, 5xx)
-
-#simulate response for testing
+from utils.loggers import logger
 
 import time
 
@@ -24,6 +17,7 @@ class ApiClient:
         if self.simulated:
             time.sleep(0.1)
             allow = credential[-1] in "02468" # Dummy rule
+            logger.info(f"Credential state: {allow}, user_id: user_{credential[-4:]}")
             return {"authorized": allow, "user_id": f"user_{credential[-4:]}"} 
         raise NotImplementedError   
 

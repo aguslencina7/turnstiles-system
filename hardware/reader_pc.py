@@ -10,13 +10,14 @@ class ReaderSim:
 
     def generate_rand_hex(self, n=8):
         hex = secrets.token_hex(8)
+        return hex
         #return "".join(random.choice("0123456789ABCDEF") for _ in range(n)) #Intentar hacer que haga credenciales completas para que puedan ser normalizadas
 
     def read_once(self):
         time.sleep(0.2)
         if self.sequence:
             if self._i >= len(self.sequence):
-                return None if not self.loop_sequence else self._rand_hex()
+                return None if not self.loop_sequence else self.generate_rand_hex()
             val = self.sequence[self._i]
             self._i += 1
             return val
